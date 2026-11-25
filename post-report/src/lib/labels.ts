@@ -1,0 +1,16 @@
+export const LABELS = {
+  releasedDt: "Выпущено ДТ",
+  otherGoodsPztk: "Иные товары на ПЗТК",
+  pdt: "ПДТ",
+  do1: "ДО1",
+  do2: "ДО2",
+  customsWatch: "Таможенное наблюдение (ТН)",
+  dtImport: "ДТ ИМПОРТ",
+  dtExport: "ДТ ЭКСПОРТ",
+  nshsTp: "НШС (ТП)",
+  nshsTpFull: "нештатная ситуация уровня таможенного поста",
+  cubicMeters: "м³",
+  tons: "т",
+  tempStorage: "Временное хранение (ВХ)",
+  shiftOps: "Операции смены",
+} as const;
