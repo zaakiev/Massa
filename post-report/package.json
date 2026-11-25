@@ -1,0 +1,31 @@
+{
+  "name": "post-report",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "env -u DATABASE_URL next dev -p 3000",
+    "build": "next build && node scripts/migrate.mjs",
+    "start": "next start -p 3000",
+    "test": "vitest run",
+    "migrate": "node scripts/migrate.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.6.0",
+    "bcryptjs": "^3.0.3",
+    "next": "^15.5.29",
+    "pg": "^8.23.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^26.6.10",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.8.3",
+    "vitest": "^5.1.2"
+  }
+}
