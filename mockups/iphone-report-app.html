@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Макет — отчёт поста Морской торговый порт Махачкала</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a222c;
+      --phone: #11181f;
+      --line: #2a3542;
+      --text: #e8eef4;
+      --muted: #8b9aab;
+      --accent: #3d8bfd;
+      --ok: #2f9e6b;
+      --warn: #c9892e;
+      --info: #4a8ec7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px 16px 48px;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 6px; font-weight: 650; }
+    .lead { color: var(--muted); margin: 0 0 20px; font-size: 0.95rem; max-width: 40rem; }
+    .tabs {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+    }
+    .tabs button {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .tabs button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .layout {
+      display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start;
+    }
+    .phone {
+      width: 340px;
+      height: 820px;
+      background: var(--phone);
+      border: 2px solid #3a4654;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px #000 inset;
+    }
+    .notch {
+      height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 1px solid var(--line);
+      background: #0c1116;
+    }
+    .notch-bar {
+      width: 72px; height: 8px; border-radius: 4px; background: #3a4654;
+    }
+    .status {
+      height: 22px;
+      padding: 0 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; color: var(--muted);
+    }
+    .status strong { color: var(--text); font-weight: 600; }
+    .screen {
+      flex: 1; overflow: auto; padding: 8px 14px 16px;
+    }
+    .home {
+      height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid var(--line);
+    }
+    .home-bar {
+      width: 100px; height: 4px; border-radius: 2px; background: #3a4654;
+    }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row.between { justify-content: space-between; }
+    .btn {
+      border: none; border-radius: 10px; padding: 10px 12px;
+      font-size: 0.9rem; cursor: default; font-weight: 560;
+    }
+    .btn.primary { background: var(--accent); color: #fff; flex: 1; }
+    .btn.secondary { background: #243040; color: var(--text); border: 1px solid var(--line); }
+    .btn.tab { flex: 1; font-size: 12px; padding: 8px 6px; }
+    .btn.tab.on { background: var(--accent); color: #fff; border: none; }
+    .muted { color: var(--muted); font-size: 0.82rem; }
+    .card {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #161e27;
+      margin-bottom: 8px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .pill.ok { color: #b8f0d2; border-color: #2f9e6b55; background: #2f9e6b22; }
+    .pill.warn { color: #ffe0a8; border-color: #c9892e55; background: #c9892e22; }
+    .pill.info { color: #b7dbf5; border-color: #4a8ec755; background: #4a8ec722; }
+    .pill.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .stat {
+      flex: 1;
+      background: #161e27;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .stat .v { font-size: 1.15rem; font-weight: 650; }
+    .stat .l { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .stat.warn .v { color: #ffc96b; }
+    .camera {
+      height: 160px;
+      border-radius: 12px;
+      border: 1px dashed #4a5a6c;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; background: #0c1116; margin: 8px 0;
+    }
+    .section-title { font-size: 0.8rem; font-weight: 650; margin: 10px 0 4px; }
+    .line-item {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .note {
+      flex: 1; min-width: 240px; max-width: 360px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .note h2 { font-size: 1rem; margin: 0 0 8px; }
+    .note p { margin: 0 0 10px; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+    .hidden { display: none !important; }
+    h3.screen-h { font-size: 1rem; margin: 0 0 8px; }
+    .stack { display: flex; flex-direction: column; gap: 10px; }
+    .select {
+      padding: 10px 12px;
+      border: 1px solid #4a5a6c;
+      border-radius: 8px;
+      background: #161e27;
+    }
+  </style>
+</head>
+<body>
+  <h1>Макет · таможенный пост Морской торговый порт Махачкала</h1>
+  <p class="lead">Черновик экранов под iPhone. Подписи как в работе смены: Выпущено ДТ, ПДТ, ДО1, ДО2, ТН, ДТ ИМПОРТ / ДТ ЭКСПОРТ, Иные товары на ПЗТК, НШС (ТП).</p>
+
+  <div class="tabs" id="tabs">
+    <button type="button" data-screen="feed">Лента</button>
+    <button type="button" data-screen="new">Новый</button>
+    <button type="button" data-screen="card" class="active">Карточка</button>
+    <button type="button" data-screen="stats">Статистика</button>
+  </div>
+
+  <div class="layout">
+    <div class="phone">
+      <div class="notch"><div class="notch-bar"></div></div>
+      <div class="status">
+        <span>09:41</span>
+        <strong id="phone-title">Отчёт</strong>
+        <span>сеть</span>
+      </div>
+      <div class="screen">
+        <!-- FEED -->
+        <div id="screen-feed" class="stack hidden">
+          <div class="row">
+            <button class="btn primary" type="button">Новый отчёт</button>
+            <button class="btn secondary" type="button">Статистика</button>
+          </div>
+          <div class="muted">Общая база поста · Морской торговый порт Махачкала</div>
+          <div class="card">
+            <div class="row" style="gap:8px">
+              <strong>25.11.2026</strong>
+              <span class="pill warn">есть риски</span>
+            </div>
+            <div class="muted" style="margin-top:4px">Смена 2 · Иванов</div>
+          </div>
+          <div class="card">
+            <div class="row" style="gap:8px">
+              <strong>24.11.2026</strong>
+              <span class="pill ok">без рисков</span>
+            </div>
+            <div class="muted" style="margin-top:4px">Смена 1 · Петров</div>
+          </div>
+          <div class="card">
+            <div class="row" style="gap:8px">
+              <strong>23.11.2026</strong>
+              <span class="pill ok">без рисков</span>
+            </div>
+            <div class="muted" style="margin-top:4px">Смена 3 · Сидоров</div>
+          </div>
+        </div>
+
+        <!-- NEW -->
+        <div id="screen-new" class="stack hidden">
+          <h3 class="screen-h">Новый отчёт</h3>
+          <div>
+            <div class="muted">Смена</div>
+            <div class="row" style="margin-top:6px; gap:6px">
+              <span class="pill on">1</span>
+              <span class="pill">2</span>
+              <span class="pill">3</span>
+              <span class="pill">4</span>
+            </div>
+          </div>
+          <div>
+            <div class="muted">Фамилия</div>
+            <div class="select" style="margin-top:6px">Иванов ▾</div>
+          </div>
+          <div class="camera">
+            <strong>Камера</strong>
+            <span class="muted">Страница 1 — суточный · страница 2 — ВХ и ПЗТК</span>
+          </div>
+          <div class="row" style="gap:8px">
+            <span class="pill">фото 1</span>
+            <span class="pill">фото 2</span>
+          </div>
+          <button class="btn primary" type="button">Распознать</button>
+        </div>
+
+        <!-- CARD -->
+        <div id="screen-card" class="stack">
+          <div>
+            <strong>25.11.2026 · смена 2</strong>
+            <div class="muted">Иванов · 2 фото</div>
+          </div>
+          <div class="row" id="card-tabs">
+            <button class="btn secondary tab on" type="button" data-tab="summary">Сводка</button>
+            <button class="btn secondary tab" type="button" data-tab="tables">Таблицы</button>
+            <button class="btn secondary tab" type="button" data-tab="risks">Риски</button>
+          </div>
+
+          <div id="tab-summary" class="stack">
+            <div class="row">
+              <div class="stat"><div class="v">10</div><div class="l">на рейде</div></div>
+              <div class="stat"><div class="v">3</div><div class="l">ожидание убытия</div></div>
+            </div>
+            <div class="row">
+              <div class="stat warn"><div class="v">8 ч</div><div class="l">простой за сутки</div></div>
+              <div class="stat"><div class="v">1935 ч</div><div class="l">с начала года</div></div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div style="font-size:0.82rem; font-weight:650; margin-bottom:6px">Временное хранение (ВХ)</div>
+              <div class="muted" style="line-height:1.55">
+                Всего товарных партий — 16<br>
+                цемент — 11<br>
+                порошок стиральный — 1<br>
+                лампочки — 1<br>
+                штукатурка — 1<br>
+                клей плиточный — 1<br>
+                образцы цемента — 1
+              </div>
+              <div style="font-size:0.85rem; margin-top:8px; line-height:1.55">
+                <strong>Выпущено ДТ — 8</strong><br>
+                из 16 партий на ВХ
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div style="font-size:0.82rem; font-weight:650; margin-bottom:6px">Операции смены</div>
+              <div class="muted" style="line-height:1.55">
+                ДО1 — 0<br>
+                ДО2 — 5<br>
+                Таможенное наблюдение (ТН) — 1<br>
+                ДТ ИМПОРТ — 0<br>
+                ДТ ЭКСПОРТ — 2<br>
+                ПДТ с начала года (нарастающим) — 53
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div style="font-size:0.82rem; font-weight:650; margin-bottom:4px">НШС (ТП)</div>
+              <div class="muted">Нештатная ситуация уровня таможенного поста — за смену не зафиксирована</div>
+            </div>
+          </div>
+
+          <div id="tab-tables" class="stack hidden">
+            <div class="section-title">Суда на рейде</div>
+            <div class="line-item">
+              <strong style="font-size:0.85rem">Сильвер Стар</strong>
+              <div class="muted">цемент · 2910 т</div>
+            </div>
+            <div class="line-item">
+              <strong style="font-size:0.85rem">МАЛА</strong>
+              <div class="muted">цемент · 2906 т</div>
+            </div>
+            <div class="line-item">
+              <strong style="font-size:0.85rem">Амиран Дарья</strong>
+              <div class="muted">без груза</div>
+            </div>
+            <div class="section-title">Иные товары на ПЗТК</div>
+            <div class="card">
+              <div style="font-size:0.85rem">Лесоматериалы · 587,25 м³ · 469,8 т</div>
+              <div class="muted">ДТ №10228020/…</div>
+            </div>
+            <div class="card">
+              <div style="font-size:0.85rem">Калий хлористый · 3036 биг-бэгов</div>
+              <div class="muted">ДТ №… · вес брутто</div>
+            </div>
+          </div>
+
+          <div id="tab-risks" class="stack hidden">
+            <div class="card">
+              <span class="pill warn">ВХ</span>
+              <div style="margin-top:6px; font-size:0.85rem">PERSIAN SOPHIA — срок ВХ до 04.07.2026, статус: временное хранение</div>
+            </div>
+            <div class="card">
+              <span class="pill warn">Простой</span>
+              <div style="margin-top:6px; font-size:0.85rem">Ветер с 14:20 до 22:00 24.11.2026 · около 7 ч 40 мин</div>
+            </div>
+            <div class="card">
+              <span class="pill info">Операция</span>
+              <div style="margin-top:6px; font-size:0.85rem">ШАЛИ — погрузка судна (кукуруза кормовая), статус: начата</div>
+            </div>
+            <div class="card">
+              <span class="pill info">НШС (ТП)</span>
+              <div style="margin-top:6px; font-size:0.85rem">Нештатная ситуация уровня таможенного поста — нет</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div id="screen-stats" class="stack hidden">
+          <h3 class="screen-h">Статистика</h3>
+          <div class="row" style="gap:6px">
+            <span class="pill on">неделя</span>
+            <span class="pill">месяц</span>
+            <span class="pill">свой период</span>
+          </div>
+          <div class="row">
+            <div class="stat warn"><div class="v">48 часов</div><div class="l">простои</div></div>
+            <div class="stat"><div class="v">71</div><div class="l">судов</div></div>
+          </div>
+          <div class="row">
+            <div class="stat"><div class="v">18,2 тысячи</div><div class="l">тонн</div></div>
+            <div class="stat"><div class="v">7</div><div class="l">отчётов</div></div>
+          </div>
+          <div class="section-title">По сменам</div>
+          <div class="row between"><span style="font-size:0.9rem">Смена 1</span><span class="muted">2 отчёта</span></div>
+          <div class="row between"><span style="font-size:0.9rem">Смена 2</span><span class="muted">3 отчёта</span></div>
+          <div class="row between"><span style="font-size:0.9rem">Смена 3</span><span class="muted">2 отчёта</span></div>
+          <div class="muted">Пример · 19–25.11.2026</div>
+        </div>
+      </div>
+      <div class="home"><div class="home-bar"></div></div>
+    </div>
+
+    <aside class="note">
+      <h2>Что на макете</h2>
+      <p>Переключай экраны сверху. В карточке — вкладки Сводка / Таблицы / Риски.</p>
+      <h2>Подписи как договорились</h2>
+      <p>Выпущено ДТ · Иные товары на ПЗТК · ПДТ · ДО1 · ДО2 · Таможенное наблюдение (ТН) · ДТ ИМПОРТ · ДТ ЭКСПОРТ · м³ · НШС (ТП) — нештатная ситуация уровня таможенного поста.</p>
+      <h2>ВХ в сводке</h2>
+      <p>Как в отчёте: всего партий, разбивка по видам товаров, сколько Выпущено ДТ.</p>
+      <p><strong style="color:var(--text)">Файл:</strong> <code style="color:#9ec5ff">mockups/iphone-report-app.html</code></p>
+    </aside>
+  </div>
+
+  <script>
+    const titles = {
+      feed: "Отчёты",
+      new: "Загрузка",
+      card: "Отчёт",
+      stats: "Статистика",
+    };
+
+    function showScreen(name) {
+      ["feed", "new", "card", "stats"].forEach((id) => {
+        document.getElementById("screen-" + id).classList.toggle("hidden", id !== name);
+      });
+      document.getElementById("phone-title").textContent = titles[name];
+      document.querySelectorAll("#tabs button").forEach((b) => {
+        b.classList.toggle("active", b.dataset.screen === name);
+      });
+    }
+
+    document.querySelectorAll("#tabs button").forEach((b) => {
+      b.addEventListener("click", () => showScreen(b.dataset.screen));
+    });
+
+    document.querySelectorAll("#card-tabs .tab").forEach((b) => {
+      b.addEventListener("click", () => {
+        const tab = b.dataset.tab;
+        document.querySelectorAll("#card-tabs .tab").forEach((x) => x.classList.toggle("on", x === b));
+        ["summary", "tables", "risks"].forEach((id) => {
+          document.getElementById("tab-" + id).classList.toggle("hidden", id !== tab);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
