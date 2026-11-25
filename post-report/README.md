@@ -19,7 +19,7 @@ env -u DATABASE_URL npm run dev
 | **Без `DATABASE_URL`** | В процессе Node держится **in-memory PGlite** (миграции на старте). Данные **сбрасываются при перезапуске** сервера. |
 | **С `DATABASE_URL`** | Postgres (обязательно для production и публикации). |
 
-Для общей Postgres укажите `DATABASE_URL` в окружении. В production задайте также `SESSION_SECRET` (подпись session cookie).
+Для общей Postgres укажите `DATABASE_URL` в окружении. В production **обязателен** `SESSION_SECRET` (подпись session cookie). Без него процесс генерирует одноразовый секрет в памяти — сессии не переживают рестарт и не подходят для публикации.
 
 ### Первый запуск (bootstrap)
 
@@ -32,7 +32,7 @@ env -u DATABASE_URL npm run dev
 
 ### Сессия
 
-Cookie `post_session` — HMAC-SHA256 от `code_hash` с `SESSION_SECRET`. Смена кода поста в настройках инвалидирует старые сессии.
+Cookie `post_session` — HMAC-SHA256 от `code_hash` с `SESSION_SECRET` (или с ephemeral-секретом процесса, если переменная не задана). Смена кода поста в настройках инвалидирует старые сессии.
 
 ## OCR
 

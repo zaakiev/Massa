@@ -6,10 +6,14 @@ import { sql } from "./db";
 export const SESSION_COOKIE = "post_session";
 const SESSION_MAX_AGE = 30 * 24 * 60 * 60;
 
+/** Ephemeral only when SESSION_SECRET is unset (local/dev). Never a fixed string in source. */
+let ephemeralSessionSecret: string | undefined;
+
 function sessionSecret(): string {
   const fromEnv = process.env.SESSION_SECRET?.trim();
   if (fromEnv) return fromEnv;
-  return "post-report-dev-session-secret";
+  ephemeralSessionSecret ??= crypto.randomBytes(32).toString("hex");
+  return ephemeralSessionSecret;
 }
 
 async function getCodeHash(): Promise<string | null> {
