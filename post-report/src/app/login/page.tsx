@@ -33,12 +33,13 @@ export default function LoginPage() {
   }
 
   return (
-    <main>
+    <main className="login-page">
       <h1>Вход</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="code">Код доступа</label>
         <input
           id="code"
+          className="input"
           type="password"
           name="code"
           autoComplete="current-password"
@@ -47,7 +48,7 @@ export default function LoginPage() {
           required
         />
         {error ? <p role="alert">{error}</p> : null}
-        <button type="submit" disabled={submitting}>
+        <button type="submit" className="btn primary" disabled={submitting}>
           {submitting ? "…" : "Войти"}
         </button>
       </form>
