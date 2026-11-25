@@ -1,0 +1,34 @@
+-- post-report/migrations/001_init.sql
+CREATE TABLE IF NOT EXISTS post_settings (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  code_hash TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS officers (
+  id SERIAL PRIMARY KEY,
+  full_name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS shifts (
+  id SERIAL PRIMARY KEY,
+  shift_no INTEGER NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS reports (
+  id SERIAL PRIMARY KEY,
+  report_date DATE NOT NULL,
+  shift_no INTEGER NOT NULL,
+  officer_name TEXT NOT NULL,
+  payload JSONB NOT NULL,
+  has_risks BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS report_photos (
+  id SERIAL PRIMARY KEY,
+  report_id INTEGER NOT NULL REFERENCES reports(id) ON DELETE CASCADE,
+  page_no INTEGER NOT NULL,
+  file_path TEXT NOT NULL
+);
