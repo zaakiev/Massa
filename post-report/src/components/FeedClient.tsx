@@ -45,9 +45,9 @@ export function FeedClient() {
         <Link href="/reports/new" className="btn primary">
           Новый отчёт
         </Link>
-        <span className="btn secondary" style={{ pointerEvents: "none", opacity: 0.6 }}>
+        <Link href="/stats" className="btn secondary">
           Статистика
-        </span>
+        </Link>
       </div>
       <div className="muted">Общая база поста · Морской торговый порт Махачкала</div>
 
