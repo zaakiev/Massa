@@ -7,6 +7,7 @@ import {
   writeReportPhotos,
 } from "@/lib/reports";
 import type { ReportPayload } from "@/lib/types";
+import { findOversizedPhoto, MAX_PHOTO_BYTES } from "@/lib/uploads";
 
 async function buffersFromFormData(formData: FormData): Promise<Buffer[]> {
   const files: Buffer[] = [];
@@ -103,6 +104,19 @@ export async function POST(request: Request) {
           : undefined,
       payload: parsedPayload,
     });
+    const uploaded: File[] = [];
+    for (const value of formData.values()) {
+      if (value instanceof File && value.size > 0) {
+        uploaded.push(value);
+      }
+    }
+    const oversized = findOversizedPhoto(uploaded);
+    if (oversized) {
+      return NextResponse.json(
+        { error: `photo exceeds ${MAX_PHOTO_BYTES} bytes` },
+        { status: 413 },
+      );
+    }
     photoBuffers = await buffersFromFormData(formData);
   } else {
     let body: Record<string, unknown>;

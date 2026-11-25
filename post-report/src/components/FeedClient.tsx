@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { formatReportDate } from "@/lib/format";
 
@@ -13,6 +14,7 @@ type ReportRow = {
 };
 
 export function FeedClient() {
+  const router = useRouter();
   const [reports, setReports] = useState<ReportRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,15 +41,31 @@ export function FeedClient() {
     };
   }, []);
 
+  async function onLogout() {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      /* proceed to login */
+    }
+    router.push("/login");
+    router.refresh();
+  }
+
   return (
     <div className="stack">
-      <div className="row">
+      <div className="row" style={{ flexWrap: "wrap", gap: 8 }}>
         <Link href="/reports/new" className="btn primary">
           Новый отчёт
         </Link>
         <Link href="/stats" className="btn secondary">
           Статистика
         </Link>
+        <Link href="/settings" className="btn secondary">
+          Настройки
+        </Link>
+        <button type="button" className="btn secondary" onClick={() => void onLogout()}>
+          Выход
+        </button>
       </div>
       <div className="muted">Общая база поста · Морской торговый порт Махачкала</div>
 

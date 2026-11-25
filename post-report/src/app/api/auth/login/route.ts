@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { setSession, verifyPostCode } from "@/lib/auth";
+import { seedDefaultShiftsIfEmpty } from "@/lib/directories";
 
 export async function POST(request: Request) {
   let body: { code?: string };
@@ -16,5 +17,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   await setSession();
+  await seedDefaultShiftsIfEmpty();
   return NextResponse.json({ ok: true });
 }

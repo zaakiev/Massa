@@ -36,13 +36,15 @@ function emptyPayload(): ReportPayload {
 
 export function NewReportClient() {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
+  const page1Ref = useRef<HTMLInputElement>(null);
+  const page2Ref = useRef<HTMLInputElement>(null);
 
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [officers, setOfficers] = useState<Officer[]>([]);
   const [shiftNo, setShiftNo] = useState<number | null>(null);
   const [officerName, setOfficerName] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
+  const [page1, setPage1] = useState<File | null>(null);
+  const [page2, setPage2] = useState<File | null>(null);
   const [payload, setPayload] = useState<ReportPayload | null>(null);
   const [reportDate, setReportDate] = useState(
     new Date().toISOString().slice(0, 10),
@@ -87,22 +89,19 @@ export function NewReportClient() {
     };
   }, []);
 
-  function onFilesChange(list: FileList | null) {
-    if (!list) return;
-    setFiles(Array.from(list));
-  }
+  const photoFiles = [page1, page2].filter((f): f is File => f !== null);
 
   async function onRecognize() {
     setError("");
     setWarnings([]);
-    if (files.length === 0) {
+    if (photoFiles.length === 0) {
       setError("Добавьте хотя бы одно фото");
       return;
     }
     setRecognizing(true);
     try {
       const form = new FormData();
-      for (const f of files) {
+      for (const f of photoFiles) {
         form.append("photos", f);
       }
       const res = await fetch("/api/recognize", { method: "POST", body: form });
@@ -169,7 +168,7 @@ export function NewReportClient() {
       form.append("shift_no", String(shiftNo));
       form.append("officer_name", officerName);
       form.append("payload", JSON.stringify(bodyPayload));
-      for (const f of files) {
+      for (const f of photoFiles) {
         form.append("photos", f);
       }
 
@@ -247,45 +246,57 @@ export function NewReportClient() {
         />
       </div>
 
-      <button
-        type="button"
-        className="camera"
-        onClick={() => fileRef.current?.click()}
-      >
-        <strong>Камера</strong>
-        <span className="muted">
-          Страница 1 — суточный · страница 2 — ВХ и ПЗТК
-        </span>
-        <span className="muted">
-          {files.length > 0
-            ? `${files.length} фото выбрано`
-            : "Нажмите, чтобы сделать снимок"}
-        </span>
-      </button>
-      <input
-        ref={fileRef}
-        className="hidden-input"
-        type="file"
-        accept="image/*"
-        capture="environment"
-        multiple
-        onChange={(e) => onFilesChange(e.target.files)}
-      />
-
-      {files.length > 0 ? (
-        <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
-          {files.map((f, i) => (
-            <span key={`${f.name}-${i}`} className="pill">
-              фото {i + 1}
-            </span>
-          ))}
+      <div className="stack" style={{ gap: 10 }}>
+        <div>
+          <div className="muted">Страница 1 — суточный отчёт</div>
+          <button
+            type="button"
+            className="camera"
+            style={{ marginTop: 6 }}
+            onClick={() => page1Ref.current?.click()}
+          >
+            <strong>{page1 ? page1.name : "Снимок страницы 1"}</strong>
+          </button>
+          <input
+            ref={page1Ref}
+            className="hidden-input"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              setPage1(f);
+            }}
+          />
         </div>
-      ) : null}
+        <div>
+          <div className="muted">Страница 2 — ВХ и ПЗТК</div>
+          <button
+            type="button"
+            className="camera"
+            style={{ marginTop: 6 }}
+            onClick={() => page2Ref.current?.click()}
+          >
+            <strong>{page2 ? page2.name : "Снимок страницы 2"}</strong>
+          </button>
+          <input
+            ref={page2Ref}
+            className="hidden-input"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              setPage2(f);
+            }}
+          />
+        </div>
+      </div>
 
       <button
         type="button"
         className="btn primary"
-        disabled={recognizing || files.length === 0}
+        disabled={recognizing || photoFiles.length === 0}
         onClick={() => void onRecognize()}
       >
         {recognizing ? "Распознаём…" : "Распознать"}
