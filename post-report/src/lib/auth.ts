@@ -39,3 +39,11 @@ export async function bootstrapPostCode(code: string): Promise<boolean> {
   await sql(`INSERT INTO post_settings (id, code_hash) VALUES (1, $1)`, [hash]);
   return true;
 }
+
+export async function updatePostCode(code: string): Promise<boolean> {
+  const rows = await sql<{ id: number }>(`SELECT id FROM post_settings WHERE id = 1`);
+  if (rows.length === 0) return false;
+  const hash = await bcrypt.hash(code, 10);
+  await sql(`UPDATE post_settings SET code_hash = $1 WHERE id = 1`, [hash]);
+  return true;
+}
