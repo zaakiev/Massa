@@ -1,0 +1,33 @@
+{
+  "topics": [
+    {
+      "id": "russian",
+      "name": "Русский язык",
+      "files": [
+        "answers/russian.docx"
+      ]
+    },
+    {
+      "id": "ato-tk",
+      "name": "АТО и ТК",
+      "files": [
+        "answers/ato-tk.docx"
+      ]
+    },
+    {
+      "id": "expertise",
+      "name": "Экспертиза",
+      "files": [
+        "answers/expertise.docx"
+      ]
+    }
+  ],
+  "match": {
+    "minScore": 0.55,
+    "maxCandidates": 5
+  },
+  "hotkeys": {
+    "lookupFromClipboard": "F8",
+    "quit": "Q"
+  }
+}
